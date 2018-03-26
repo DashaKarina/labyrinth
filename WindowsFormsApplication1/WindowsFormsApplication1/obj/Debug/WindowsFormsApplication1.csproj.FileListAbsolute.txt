@@ -1,2 +1,3 @@
 D:\Даша\3\2\Жолобов\Лабиринт\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe.config
 F:\Моя_папка\агу\3_курс\ИП\лабиринт\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe.config
+F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe.config

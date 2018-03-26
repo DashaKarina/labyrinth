@@ -47,7 +47,45 @@ namespace WindowsFormsApplication1
             Labyrinth test = new Labyrinth();
             test.up_wall = true;
         }
-        //Я тут была
+
+        public void build_maze()
+        {
+            Labyrinth[] location = new Labyrinth[15];
+            string str = "WRWWLWWLWWLWLWRRWRWWWRWWRWLW";
+            str.ToCharArray();
+            for (int i = 1; i < str.Length; i++)
+            {
+                if (str[i] == 'W')
+                {
+                    location[i - 1].down_wall = false; 
+                }
+                else if (str[i] == 'L')
+                {
+                    location[i - 1].down_wall = true;
+                    if (str[i+1] == 'W')
+                    {
+                        location[i - 1].down_wall = false;
+                    }
+                    else
+                    {
+                        location[i - 1].left_wall = true;
+                    }
+                }
+                else if (str[i] == 'R')
+                {
+                    location[i - 1].down_wall = true;
+                    if (str[i + 1] == 'W')
+                    {
+                        location[i - 1].down_wall = false;
+                    }
+                    else
+                    {
+                        location[i - 1].left_wall = true;
+                        location[i - 1].right_wall = true;
+                    }
+                }
+            }
+        }
 
     }
 }
