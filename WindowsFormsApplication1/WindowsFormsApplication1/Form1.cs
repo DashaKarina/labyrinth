@@ -47,6 +47,7 @@ namespace WindowsFormsApplication1
             Labyrinth test = new Labyrinth();
             test.up_wall = true;
         }
+        //Я тут была
 
     }
 }
