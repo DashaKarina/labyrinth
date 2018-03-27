@@ -1,16 +1,19 @@
-D:\Даша\3\2\Жолобов\Лабиринт\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe.config
-F:\Моя_папка\агу\3_курс\ИП\лабиринт\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe.config
-<<<<<<< HEAD
 F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe.config
-=======
-D:\Даша\3\2\Жолобов\Лабиринт\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
-D:\Даша\3\2\Жолобов\Лабиринт\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
-D:\Даша\3\2\Жолобов\Лабиринт\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csprojResolveAssemblyReference.cache
-D:\Даша\3\2\Жолобов\Лабиринт\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
-D:\Даша\3\2\Жолобов\Лабиринт\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
-D:\Даша\3\2\Жолобов\Лабиринт\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.Cache
-D:\Даша\3\2\Жолобов\Лабиринт\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
-D:\Даша\3\2\Жолобов\Лабиринт\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
->>>>>>> f726bf5460ffa7d0a4e7adda4a9ab53798d55f0a
+F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\mscorlib.dll
+F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\System.Net.Http.dll
+F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\System.Net.Http.xml
+F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\ru\mscorlib.resources.dll
+F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\ru\System.Net.Http.resources.dll
+F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\normidna.nlp
+F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\normnfc.nlp
+F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\normnfd.nlp
+F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\normnfkc.nlp
+F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\normnfkd.nlp
+F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.Cache
 F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
 F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+F:\Моя_папка\агу\3_курс\ИП\labyrinth\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csprojResolveAssemblyReference.cache

@@ -16,8 +16,9 @@ namespace WindowsFormsApplication1
         public Form1()
         {
             InitializeComponent();
-            Read();
-            Tester();
+            //Read();
+            //Tester();
+            build_maze();
         }
         string[] txt;
         String line;
@@ -58,26 +59,30 @@ namespace WindowsFormsApplication1
 
         public  class Labyrinth // Свойства лабиринта
         {
-            private Boolean val_wall;
+            private Boolean val_up;
+            private Boolean val_down;
+            private Boolean val_left;
+            private Boolean val_right;
+
             public Boolean up_wall
-            {  
-                get { return val_wall; }
-                set {if (value == true) val_wall = true;  else val_wall = false;}
+            {
+                get { return val_up; }
+                set { if (value == true) val_up = true; else val_up = false; }
             }
             public Boolean down_wall
             {
-                get { return val_wall; }
-                set { if (value == true) val_wall = true; else val_wall = false; }
+                get { return val_down; }
+                set { if (value == true) val_down = true; else val_down = false; }
             }
             public Boolean left_wall
             {
-                get { return val_wall; }
-                set { if (value == true) val_wall = true; else val_wall = false; }
+                get { return val_left; }
+                set { if (value == true) val_left = true; else val_left = false; }
             }
             public Boolean right_wall
             {
-                get { return val_wall; }
-                set { if (value == true) val_wall = true; else val_wall = false; }
+                get { return val_right; }
+                set { if (value == true) val_right = true; else val_right = false; }
             }
         };
 
@@ -90,41 +95,176 @@ namespace WindowsFormsApplication1
 
         public void build_maze()
         {
-            Labyrinth[] location = new Labyrinth[15];
-            string str = "WRWWLWWLWWLWLWRRWRWWWRWWRWLW";
-            str.ToCharArray();
-            for (int i = 1; i < str.Length; i++)
+            char flag = 'S';
+            //Север = N Юг = S Запад = W Восток = E
+            
+            Labyrinth[] location = new Labyrinth[20];
+            for (int i = 0; i < location.Length; i++)
             {
-                if (str[i] == 'W')
+                location[i] = new Labyrinth();
+            }
+            string str = "RWWLWWLWWLWLWRRWRWWWRWWRWLW";
+            str.ToCharArray();
+            int j = -1;
+            for (int i = 0; i < str.Length; i++)
+            {
+                j++;
+                if (flag == 'S')
                 {
-                    location[i - 1].down_wall = false; 
+                    if (str[i] == 'W') //Если мы смотрели на юг и пошли вперед, то слева стенка
+                    {
+                        location[j].right_wall = true;                   
+                    }
+                    else if (str[i] == 'L') //Если мы смотрели на юг и повернули налево, то слева пусто и мы смотрим на 
+                    {
+                        flag = 'E';
+                        if (str[i + 1] == 'W') //Если мы смотрели на восток и пошли вперед, то слева стенка
+                        {
+                            location[j + 1].up_wall = true;
+                            i++; continue;
+                        }
+                        else
+                        {
+                            j--; continue;
+                        }
+                    }
+                    else if (str[i] == 'R') //Если мы смотрели на юг и повернули направо, то слева стенка и сверху стенка
+                    {
+                        flag = 'W';
+                        location[j].right_wall = true;
+                        location[j].down_wall = true;
+
+                        if (str[i + 1] == 'W') //Если мы смотрели на запад и пошли вперед, то слева стенка
+                        {
+                            location[j + 1].down_wall = true;
+                            i++; continue;
+                        }
+                        else
+                        {
+                            j--; continue;
+                        }
+                    }
                 }
-                else if (str[i] == 'L')
+                if (flag == 'E')
                 {
-                    location[i - 1].down_wall = true;
-                    if (str[i+1] == 'W')
+                    if (str[i] == 'W') //Если мы смотрели на восток и пошли вперед, то слева стенка
                     {
-                        location[i - 1].down_wall = false;
+                        location[j].up_wall = true;
                     }
-                    else
+                    else if (str[i] == 'L') //Если мы смотрели на восток и повернули налево, то слева пусто и мы смотрим на север
                     {
-                        location[i - 1].left_wall = true;
+                        flag = 'N';
+                        if (str[i + 1] == 'W') //Если мы смотрели на север и пошли вперед, то слева стенка
+                        {
+                            location[j + 1].right_wall = true;
+                            i++; continue;
+                        }
+                        else
+                        {
+                            j--; continue;
+                        }
+                    }
+                    else if (str[i] == 'R') //Если мы смотрели на восток и повернули направо, то слева стенка и впереди стенка
+                    {
+                        flag = 'S';
+                        location[j].up_wall = true;
+                        location[j].right_wall = true;
+
+                        if (str[i + 1] == 'W') //Если мы смотрели на юг и пошли вперед, то слева стенка
+                        {
+                            location[j + 1].right_wall = true;
+                            i++; continue;
+                        }
+                        else
+                        {
+                            j--; continue;
+                        }
                     }
                 }
-                else if (str[i] == 'R')
+                if (flag == 'W')
                 {
-                    location[i - 1].down_wall = true;
-                    if (str[i + 1] == 'W')
+                    if (str[i] == 'W') //Если мы смотрели на запад и пошли вперед, то слева стенка
                     {
-                        location[i - 1].down_wall = false;
+                        location[j].down_wall = true;
+                        Console.WriteLine(j + 1);
                     }
-                    else
+                    else if (str[i] == 'L') //Если мы смотрели на запад и повернули налево, то слева пусто и мы смотрим на юг
                     {
-                        location[i - 1].left_wall = true;
-                        location[i - 1].right_wall = true;
+                        flag = 'S';
+                        if (str[i + 1] == 'W') //Если мы смотрели на юг и пошли вперед, то слева стенка
+                        {
+                            location[j + 1].right_wall = true;
+                            i++;  continue;
+                        }
+                        else
+                        {
+                            j--; continue;
+                        }
+                    }
+                    else if (str[i] == 'R') //Если мы смотрели на запад и повернули направо, то слева стенка и впереди стенка
+                    {
+                        flag = 'N';
+                        location[j].down_wall = true;
+                        location[j].left_wall = true;
+
+                        if (str[i + 1] == 'W') //Если мы смотрели на север и пошли вперед, то слева стенка
+                        {
+                            location[j + 1].left_wall = true;
+                            i++; continue;
+                        }
+                        else
+                        {
+                            j--; continue;
+                        }
+                    }
+                }
+                if (flag == 'N')
+                {
+                    if (str[i] == 'W') //Если мы смотрели на север и пошли вперед, то слева стенка
+                    {
+                        location[j].up_wall = true;
+                    }
+                    else if (str[i] == 'L') //Если мы смотрели на север и повернули налево, то слева пусто и мы смотрим на запад
+                    {
+                        flag = 'W';
+                        if (str[i + 1] == 'W') //Если мы смотрели на запад и пошли вперед, то слева стенка
+                        {
+                            location[j + 1].down_wall = true;
+                            i++; continue;
+                        }
+                        else
+                        {
+                            j--; continue;
+                        }
+                    }
+                    else if (str[i] == 'R') //Если мы смотрели на север и повернули направо, то слева стенка и впереди стенка и мы смотрим на восток
+                    {
+                        flag = 'E';
+                        location[j].up_wall = true;
+                        location[j].left_wall = true;
+
+                        if (str[i + 1] == 'W') //Если мы смотрели на восток и пошли вперед, то слева стенка
+                        {
+                            location[j + 1].up_wall = true;
+                            i++; continue;
+                        }
+                        else
+                        {
+                            j--; continue;
+                        }
                     }
                 }
             }
+
+            for (int i = 0; i < location.Length; i++)
+            {
+                Console.WriteLine(i+1 + "\n dw = " + location[i].down_wall + "\n lw = " + location[i].left_wall + "\n rw = " + location[i].right_wall + "\n uw = " + location[i].up_wall);
+            }
+            //foreach (Labyrinth x in location)
+            //{
+            //    Console.WriteLine("dw = " + x.down_wall + "\n lw = " + x.left_wall + "\n rw = " + x.right_wall + "\n uw = " + x.up_wall);
+            //}
+            
         }
 
     }
