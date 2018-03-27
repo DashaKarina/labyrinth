@@ -18,7 +18,10 @@ namespace WindowsFormsApplication1
             InitializeComponent();
             //Read();
             //Tester();
-            build_maze();
+            string str = "RWWLWWLWWLWLWRRWRWWWRWWRWLW";
+            build_maze(str, 'S');
+            string str1 = "WRRWLWLWWLWWLWWRWWRWWLW";
+            build_maze(str1, 'E');
         }
         string[] txt;
         String line;
@@ -93,18 +96,17 @@ namespace WindowsFormsApplication1
             Console.WriteLine(txt[1]);
         }
 
-        public void build_maze()
+        public void build_maze(string str, char flag)
         {
-            char flag = 'S';
+            //char flag = 'S';
             //Север = N Юг = S Запад = W Восток = E
             
-            Labyrinth[] location = new Labyrinth[20];
+            Labyrinth[] location = new Labyrinth[30];
             for (int i = 0; i < location.Length; i++)
             {
                 location[i] = new Labyrinth();
             }
-            string str = "RWWLWWLWWLWLWRRWRWWWRWWRWLW";
-            str.ToCharArray();
+            
             int j = -1;
             for (int i = 0; i < str.Length; i++)
             {
@@ -115,18 +117,12 @@ namespace WindowsFormsApplication1
                     {
                         location[j].right_wall = true;                   
                     }
-                    else if (str[i] == 'L') //Если мы смотрели на юг и повернули налево, то слева пусто и мы смотрим на 
+                    else if (str[i] == 'L') //Если мы смотрели на юг и повернули налево, то слева пусто и мы смотрим на восток
                     {
                         flag = 'E';
-                        if (str[i + 1] == 'W') //Если мы смотрели на восток и пошли вперед, то слева стенка
-                        {
-                            location[j + 1].up_wall = true;
-                            i++; continue;
-                        }
-                        else
-                        {
-                            j--; continue;
-                        }
+                        //location[j].right_wall = false;
+                        location[j + 1].up_wall = true;
+                        i++; continue;
                     }
                     else if (str[i] == 'R') //Если мы смотрели на юг и повернули направо, то слева стенка и сверху стенка
                     {
@@ -154,15 +150,10 @@ namespace WindowsFormsApplication1
                     else if (str[i] == 'L') //Если мы смотрели на восток и повернули налево, то слева пусто и мы смотрим на север
                     {
                         flag = 'N';
-                        if (str[i + 1] == 'W') //Если мы смотрели на север и пошли вперед, то слева стенка
-                        {
-                            location[j + 1].right_wall = true;
-                            i++; continue;
-                        }
-                        else
-                        {
-                            j--; continue;
-                        }
+                        //location[j].up_wall = false;
+                        location[j + 1].right_wall = true;
+                        i++; continue;
+
                     }
                     else if (str[i] == 'R') //Если мы смотрели на восток и повернули направо, то слева стенка и впереди стенка
                     {
@@ -177,7 +168,7 @@ namespace WindowsFormsApplication1
                         }
                         else
                         {
-                            j--; continue;
+                             j--; continue;
                         }
                     }
                 }
@@ -186,20 +177,14 @@ namespace WindowsFormsApplication1
                     if (str[i] == 'W') //Если мы смотрели на запад и пошли вперед, то слева стенка
                     {
                         location[j].down_wall = true;
-                        Console.WriteLine(j + 1);
                     }
                     else if (str[i] == 'L') //Если мы смотрели на запад и повернули налево, то слева пусто и мы смотрим на юг
                     {
                         flag = 'S';
-                        if (str[i + 1] == 'W') //Если мы смотрели на юг и пошли вперед, то слева стенка
-                        {
-                            location[j + 1].right_wall = true;
-                            i++;  continue;
-                        }
-                        else
-                        {
-                            j--; continue;
-                        }
+                        //location[j].down_wall = false;
+                        location[j + 1].right_wall = true;
+                        Console.WriteLine(j + 1);
+                        i++;  continue;
                     }
                     else if (str[i] == 'R') //Если мы смотрели на запад и повернули направо, то слева стенка и впереди стенка
                     {
@@ -214,7 +199,7 @@ namespace WindowsFormsApplication1
                         }
                         else
                         {
-                            j--; continue;
+                             j--; continue;
                         }
                     }
                 }
@@ -222,20 +207,14 @@ namespace WindowsFormsApplication1
                 {
                     if (str[i] == 'W') //Если мы смотрели на север и пошли вперед, то слева стенка
                     {
-                        location[j].up_wall = true;
+                        location[j].left_wall = true;
                     }
                     else if (str[i] == 'L') //Если мы смотрели на север и повернули налево, то слева пусто и мы смотрим на запад
                     {
                         flag = 'W';
-                        if (str[i + 1] == 'W') //Если мы смотрели на запад и пошли вперед, то слева стенка
-                        {
-                            location[j + 1].down_wall = true;
-                            i++; continue;
-                        }
-                        else
-                        {
-                            j--; continue;
-                        }
+                        //location[j].left_wall = false;
+                        location[j + 1].down_wall = true;
+                        i++; continue;
                     }
                     else if (str[i] == 'R') //Если мы смотрели на север и повернули направо, то слева стенка и впереди стенка и мы смотрим на восток
                     {
@@ -250,7 +229,7 @@ namespace WindowsFormsApplication1
                         }
                         else
                         {
-                            j--; continue;
+                             j--; continue;
                         }
                     }
                 }
