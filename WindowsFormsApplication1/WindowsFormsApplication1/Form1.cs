@@ -23,10 +23,9 @@ namespace WindowsFormsApplication1
         {
             //Отрезать в лабиринтах первый ход вперед
             Read();
-            string str = txt[2][0];
-            char flag = build_maze(str, 'S');
-            string str1 = txt[2][1];
-            build_maze(str1, flag);
+            string str = "W";
+            string str2 = "W";
+            build_maze(str, str2); //Передаем два прохода в метод создания лабиринта
         }
         string[][] txt;
         public void Read()
@@ -85,119 +84,139 @@ namespace WindowsFormsApplication1
             }
         };
 
-        public char build_maze(string str, char flag)
+        public void build_maze(string str, string str2)
         {
-            //char flag = 'S';
-            //Север = N Юг = S Запад = W Восток = E
-            
-            Labyrinth[] location = new Labyrinth[30];
-            for (int i = 0; i < location.Length; i++)
+            int size = 1 + 2 * str.Count(z => z.Equals('W')); // Размер лабиринта (надо уточнить какой проход использовать)
+            Labyrinth[,] location = new Labyrinth[size, size];
+            for (int i = 0; i < Math.Sqrt(location.Length); i++)
             {
-                location[i] = new Labyrinth();
+                for (int j = 0; j < Math.Sqrt(location.Length); j++)
+                {
+                    location[i, j] = new Labyrinth();
+                }
             }
-            
-            int j = -1;
+            object[] maze = { 'S', size / 2, 0 }; // Начальные значения 
+            maze = go_maze(str, location, maze); //Прямой проход
+            go_maze(str2, location, maze); //Обратный проход
+        }
+
+        public object[] go_maze(string str, Labyrinth[,] location, object[] entry)
+        {
+            //Север = N Юг = S Запад = W Восток = E
+            char flag = Convert.ToChar(entry[0]);
+            int x = Convert.ToInt32(entry[1]);
+            int y = Convert.ToInt32(entry[2]);
+            Console.WriteLine(x + " " + y);
             for (int i = 0; i < str.Length; i++)
             {
-                if (i == str.Length) break;
-                j++;
                 if (flag == 'S')
                 {
                     if (str[i] == 'W') //Если мы смотрели на юг и пошли вперед, то слева стенка
                     {
-                        location[j].right_wall = true;                   
+                        location[x, y].right_wall = true;
+                        y++;
                     }
                     else if (str[i] == 'L') //Если мы смотрели на юг и повернули налево, то слева пусто и мы смотрим на восток
                     {
                         flag = 'E';
-                        location[j].right_wall = false;
-                        i++; continue;
+                        location[x, y].right_wall = false;
+                        x++; i++; continue;
                     }
                     else if (str[i] == 'R') //Если мы смотрели на юг и повернули направо, то слева стенка и сверху стенка
                     {
                         flag = 'W';
-                        location[j].right_wall = true;
-                        location[j].down_wall = true;
-                        if (str[i + 1] == 'W') { i++; continue; }
-                        else { j--; continue; }
+                        location[x, y].right_wall = true;
+                        location[x, y].down_wall = true;
+                        if (str[i + 1] == 'W') { x--; i++; continue; }
+                        else continue;
                     }
                 }
                 if (flag == 'E')
                 {
                     if (str[i] == 'W') //Если мы смотрели на восток и пошли вперед, то слева стенка
                     {
-                        location[j].up_wall = true;
+                        location[x, y].up_wall = true;
+                        x++;
                     }
                     else if (str[i] == 'L') //Если мы смотрели на восток и повернули налево, то слева пусто и мы смотрим на север
                     {
                         flag = 'N';
-                        location[j].up_wall = false;
-                        i++; continue;
+                        location[x, y].up_wall = false;
+                        y--; i++; continue;
 
                     }
                     else if (str[i] == 'R') //Если мы смотрели на восток и повернули направо, то слева стенка и впереди стенка
                     {
                         flag = 'S';
-                        location[j].up_wall = true;
-                        location[j].right_wall = true;
-                        if (str[i + 1] == 'W') { i++; continue; }
-                        else { j--; continue; }
+                        location[x, y].up_wall = true;
+                        location[x, y].right_wall = true;
+                        if (str[i + 1] == 'W') { y++; i++; continue; }
+                        else continue;
                     }
                 }
                 if (flag == 'W')
                 {
                     if (str[i] == 'W') //Если мы смотрели на запад и пошли вперед, то слева стенка
                     {
-                        location[j].down_wall = true;
+                        location[x, y].down_wall = true;
+                        x--;
                     }
                     else if (str[i] == 'L') //Если мы смотрели на запад и повернули налево, то слева пусто и мы смотрим на юг
                     {
                         flag = 'S';
-                        location[j].down_wall = false;
+                        location[x, y].down_wall = false;
+                        y++;
                         i++; continue;
                     }
                     else if (str[i] == 'R') //Если мы смотрели на запад и повернули направо, то слева стенка и впереди стенка
                     {
                         flag = 'N';
-                        location[j].down_wall = true;
-                        location[j].left_wall = true;
-
-                        if (str[i + 1] == 'W') { i++; continue; }
-                        else { j--; continue; }
+                        location[x, y].down_wall = true;
+                        location[x, y].left_wall = true;
+                        if (str[i + 1] == 'W') { y--; i++; continue; }
+                        else continue; 
                     }
                 }
                 if (flag == 'N')
                 {
                     if (str[i] == 'W') //Если мы смотрели на север и пошли вперед, то слева стенка
                     {
-                        location[j].left_wall = true;
+                        location[x, y].left_wall = true;
+                        y--;
                     }
                     else if (str[i] == 'L') //Если мы смотрели на север и повернули налево, то слева пусто и мы смотрим на запад
                     {
                         flag = 'W';
-                        location[j].left_wall = false;
-                        i++; continue;
+                        location[x, y].left_wall = false;
+                        x--;  i++; continue;
                     }
                     else if (str[i] == 'R') //Если мы смотрели на север и повернули направо, то слева стенка и впереди стенка и мы смотрим на восток
                     {
                         flag = 'E';
-                        location[j].up_wall = true;
-                        location[j].left_wall = true;
+                        location[x, y].up_wall = true;
+                        location[x, y].left_wall = true;
 
-                        if (str[i + 1] == 'W') { i++; continue; }
-                        else { j--; continue; }
+                        if (str[i + 1] == 'W') { x++; i++; continue; }
+                        else continue; 
                     }
                 }
             }
-            for (int i = 0; i < location.Length; i++)
+            for (int i = 0; i < Math.Sqrt(location.Length); i++)
             {
-                Console.WriteLine(i + 1 + "\n dw = " + location[i].down_wall + "\n lw = " + location[i].left_wall + "\n rw = " + location[i].right_wall + "\n uw = " + location[i].up_wall);
+                for (int j = 0; j < Math.Sqrt(location.Length); j++)
+                {
+                    //Console.Write(String.Format("{0,3}", i,j));
+                    Console.Write(String.Format("{0,5}", "\n x " + i + " y " + j + "\n dw = " + location[i, j].down_wall + "\n lw = " + location[i, j].left_wall + "\n rw = " + location[i, j].right_wall + "\n uw = " + location[i, j].up_wall));
+                }
+                Console.WriteLine();
             }
             if (flag == 'N') flag = 'S';
             else if (flag == 'E') flag = 'W';
             else if (flag == 'S') flag = 'N';
             else flag = 'E';
-            return flag;
+            Console.WriteLine(x + " " + y);
+            entry[0] = flag; entry[1] = x; entry[2] = y-1;
+            return entry;
         }
 
     }
