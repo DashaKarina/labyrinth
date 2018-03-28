@@ -16,47 +16,43 @@ namespace WindowsFormsApplication1
         public Form1()
         {
             InitializeComponent();
-            //Read();
-            //Tester();
-            string str = "RWWLWWLWWLWLWRRWRWWWRWWRWLW";
-            build_maze(str, 'S');
-            string str1 = "WRRWLWLWWLWWLWWRWWRWWLW";
-            build_maze(str1, 'E');
+            Main();
         }
-        string[] txt;
-        String line;
+
+        public void Main()
+        {
+            //Отрезать в лабиринтах первый ход вперед
+            Read();
+            string str = txt[2][0];
+            char flag = build_maze(str, 'S');
+            string str1 = txt[2][1];
+            build_maze(str1, flag);
+        }
+        string[][] txt;
         public void Read()
         {
               try
             {
-                StreamReader sr = new StreamReader("D://Даша/3/2/Жолобов/small-test.in.txt");
-
-                line = sr.ReadToEnd();
-                txt = line.Split(' ');
-
-                //while (line != null)
-                //{
-                //    Console.WriteLine(line);
-                //    line = sr.ReadLine();
-                //    txt = line.Split(' ');
-                //}
-                //Console.WriteLine(line);
-                //string[] txt = line.Split('\n'); 
-                //foreach (string t in txt)
-                //{
-                //    Console.WriteLine(t);
-                //}
+                StreamReader sr = new StreamReader("small-test.in.txt");
+                string[] line = sr.ReadToEnd().Split(new Char[] {'\n'});
+                txt = new string[line.Length][];
+                for (int i = 0; i < line.Length; i++)
+                {
+                    txt[i] = line[i].Split(new Char[] {' '});
+                }
                 sr.Close();
-                Console.ReadLine();
+                //foreach (string[] x in txt)
+                //{
+                //    foreach (string y in x)
+                //        Console.WriteLine(y);
+                //}
             }
             catch (Exception e)
             {
                 Console.WriteLine("Exception: " + e.Message);
             }
-            finally
-            {
-                //Console.WriteLine("Executing finally block.");
-            }
+              
+              
         }
  
 
@@ -89,14 +85,7 @@ namespace WindowsFormsApplication1
             }
         };
 
-        public void Tester()
-        {
-            Labyrinth test = new Labyrinth();
-            test.up_wall = true;
-            Console.WriteLine(txt[1]);
-        }
-
-        public void build_maze(string str, char flag)
+        public char build_maze(string str, char flag)
         {
             //char flag = 'S';
             //Север = N Юг = S Запад = W Восток = E
@@ -110,6 +99,7 @@ namespace WindowsFormsApplication1
             int j = -1;
             for (int i = 0; i < str.Length; i++)
             {
+                if (i == str.Length) break;
                 j++;
                 if (flag == 'S')
                 {
@@ -120,8 +110,7 @@ namespace WindowsFormsApplication1
                     else if (str[i] == 'L') //Если мы смотрели на юг и повернули налево, то слева пусто и мы смотрим на восток
                     {
                         flag = 'E';
-                        //location[j].right_wall = false;
-                        location[j + 1].up_wall = true;
+                        location[j].right_wall = false;
                         i++; continue;
                     }
                     else if (str[i] == 'R') //Если мы смотрели на юг и повернули направо, то слева стенка и сверху стенка
@@ -129,16 +118,8 @@ namespace WindowsFormsApplication1
                         flag = 'W';
                         location[j].right_wall = true;
                         location[j].down_wall = true;
-
-                        if (str[i + 1] == 'W') //Если мы смотрели на запад и пошли вперед, то слева стенка
-                        {
-                            location[j + 1].down_wall = true;
-                            i++; continue;
-                        }
-                        else
-                        {
-                            j--; continue;
-                        }
+                        if (str[i + 1] == 'W') { i++; continue; }
+                        else { j--; continue; }
                     }
                 }
                 if (flag == 'E')
@@ -150,8 +131,7 @@ namespace WindowsFormsApplication1
                     else if (str[i] == 'L') //Если мы смотрели на восток и повернули налево, то слева пусто и мы смотрим на север
                     {
                         flag = 'N';
-                        //location[j].up_wall = false;
-                        location[j + 1].right_wall = true;
+                        location[j].up_wall = false;
                         i++; continue;
 
                     }
@@ -160,16 +140,8 @@ namespace WindowsFormsApplication1
                         flag = 'S';
                         location[j].up_wall = true;
                         location[j].right_wall = true;
-
-                        if (str[i + 1] == 'W') //Если мы смотрели на юг и пошли вперед, то слева стенка
-                        {
-                            location[j + 1].right_wall = true;
-                            i++; continue;
-                        }
-                        else
-                        {
-                             j--; continue;
-                        }
+                        if (str[i + 1] == 'W') { i++; continue; }
+                        else { j--; continue; }
                     }
                 }
                 if (flag == 'W')
@@ -181,10 +153,8 @@ namespace WindowsFormsApplication1
                     else if (str[i] == 'L') //Если мы смотрели на запад и повернули налево, то слева пусто и мы смотрим на юг
                     {
                         flag = 'S';
-                        //location[j].down_wall = false;
-                        location[j + 1].right_wall = true;
-                        Console.WriteLine(j + 1);
-                        i++;  continue;
+                        location[j].down_wall = false;
+                        i++; continue;
                     }
                     else if (str[i] == 'R') //Если мы смотрели на запад и повернули направо, то слева стенка и впереди стенка
                     {
@@ -192,15 +162,8 @@ namespace WindowsFormsApplication1
                         location[j].down_wall = true;
                         location[j].left_wall = true;
 
-                        if (str[i + 1] == 'W') //Если мы смотрели на север и пошли вперед, то слева стенка
-                        {
-                            location[j + 1].left_wall = true;
-                            i++; continue;
-                        }
-                        else
-                        {
-                             j--; continue;
-                        }
+                        if (str[i + 1] == 'W') { i++; continue; }
+                        else { j--; continue; }
                     }
                 }
                 if (flag == 'N')
@@ -212,8 +175,7 @@ namespace WindowsFormsApplication1
                     else if (str[i] == 'L') //Если мы смотрели на север и повернули налево, то слева пусто и мы смотрим на запад
                     {
                         flag = 'W';
-                        //location[j].left_wall = false;
-                        location[j + 1].down_wall = true;
+                        location[j].left_wall = false;
                         i++; continue;
                     }
                     else if (str[i] == 'R') //Если мы смотрели на север и повернули направо, то слева стенка и впереди стенка и мы смотрим на восток
@@ -222,28 +184,20 @@ namespace WindowsFormsApplication1
                         location[j].up_wall = true;
                         location[j].left_wall = true;
 
-                        if (str[i + 1] == 'W') //Если мы смотрели на восток и пошли вперед, то слева стенка
-                        {
-                            location[j + 1].up_wall = true;
-                            i++; continue;
-                        }
-                        else
-                        {
-                             j--; continue;
-                        }
+                        if (str[i + 1] == 'W') { i++; continue; }
+                        else { j--; continue; }
                     }
                 }
             }
-
             for (int i = 0; i < location.Length; i++)
             {
-                Console.WriteLine(i+1 + "\n dw = " + location[i].down_wall + "\n lw = " + location[i].left_wall + "\n rw = " + location[i].right_wall + "\n uw = " + location[i].up_wall);
+                Console.WriteLine(i + 1 + "\n dw = " + location[i].down_wall + "\n lw = " + location[i].left_wall + "\n rw = " + location[i].right_wall + "\n uw = " + location[i].up_wall);
             }
-            //foreach (Labyrinth x in location)
-            //{
-            //    Console.WriteLine("dw = " + x.down_wall + "\n lw = " + x.left_wall + "\n rw = " + x.right_wall + "\n uw = " + x.up_wall);
-            //}
-            
+            if (flag == 'N') flag = 'S';
+            else if (flag == 'E') flag = 'W';
+            else if (flag == 'S') flag = 'N';
+            else flag = 'E';
+            return flag;
         }
 
     }
