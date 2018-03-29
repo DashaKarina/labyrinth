@@ -23,11 +23,14 @@ namespace WindowsFormsApplication1
         {
             //Отрезать в лабиринтах первый ход вперед
             Read();
-            string str = "W";
-            string str2 = "W";
+            string str = txt[8][0].Remove(0,1);
+            string str2 = txt[8][1].Remove(0,1);
+            Console.WriteLine(str);
             build_maze(str, str2); //Передаем два прохода в метод создания лабиринта
+            descrip_maze(8);
         }
         string[][] txt;
+        Labyrinth[,] location;
         public void Read()
         {
               try
@@ -86,8 +89,11 @@ namespace WindowsFormsApplication1
 
         public void build_maze(string str, string str2)
         {
-            int size = 1 + 2 * str.Count(z => z.Equals('W')); // Размер лабиринта (надо уточнить какой проход использовать)
-            Labyrinth[,] location = new Labyrinth[size, size];
+            int size;
+            if(str.Length > str2.Length)
+            size = 1 + 2 * str.Count(z => z.Equals('W')); // Размер лабиринта (надо уточнить какой проход использовать)
+            else size = 1 + 2 * str2.Count(z => z.Equals('W'));
+            location = new Labyrinth[size, size];
             for (int i = 0; i < Math.Sqrt(location.Length); i++)
             {
                 for (int j = 0; j < Math.Sqrt(location.Length); j++)
@@ -96,19 +102,29 @@ namespace WindowsFormsApplication1
                 }
             }
             object[] maze = { 'S', size / 2, 0 }; // Начальные значения 
-            maze = go_maze(str, location, maze); //Прямой проход
-            go_maze(str2, location, maze); //Обратный проход
+            maze = go_maze(str, maze); //Прямой проход
+            go_maze(str2, maze); //Обратный проход
+            //for (int i = 0; i < Math.Sqrt(location.Length); i++)
+            //{
+            //    for (int j = 0; j < Math.Sqrt(location.Length); j++)
+            //    {
+            //        //Console.Write(String.Format("{0,3}", i,j));
+            //        Console.Write(String.Format("{0,5}", "\n x " + i + " y " + j + "\n dw = " + location[i, j].down_wall + "\n lw = " + location[i, j].left_wall + "\n rw = " + location[i, j].right_wall + "\n uw = " + location[i, j].up_wall));
+            //    }
+            //    Console.WriteLine();
+            //}
         }
 
-        public object[] go_maze(string str, Labyrinth[,] location, object[] entry)
+        public object[] go_maze(string str, object[] entry)
         {
             //Север = N Юг = S Запад = W Восток = E
             char flag = Convert.ToChar(entry[0]);
             int x = Convert.ToInt32(entry[1]);
             int y = Convert.ToInt32(entry[2]);
-            Console.WriteLine(x + " " + y);
+            
             for (int i = 0; i < str.Length; i++)
             {
+                if (str.Length == i) break;
                 if (flag == 'S')
                 {
                     if (str[i] == 'W') //Если мы смотрели на юг и пошли вперед, то слева стенка
@@ -165,8 +181,7 @@ namespace WindowsFormsApplication1
                     {
                         flag = 'S';
                         location[x, y].down_wall = false;
-                        y++;
-                        i++; continue;
+                        y++; i++; continue;
                     }
                     else if (str[i] == 'R') //Если мы смотрели на запад и повернули направо, то слева стенка и впереди стенка
                     {
@@ -201,23 +216,91 @@ namespace WindowsFormsApplication1
                     }
                 }
             }
-            for (int i = 0; i < Math.Sqrt(location.Length); i++)
-            {
-                for (int j = 0; j < Math.Sqrt(location.Length); j++)
-                {
-                    //Console.Write(String.Format("{0,3}", i,j));
-                    Console.Write(String.Format("{0,5}", "\n x " + i + " y " + j + "\n dw = " + location[i, j].down_wall + "\n lw = " + location[i, j].left_wall + "\n rw = " + location[i, j].right_wall + "\n uw = " + location[i, j].up_wall));
-                }
-                Console.WriteLine();
-            }
-            if (flag == 'N') flag = 'S';
-            else if (flag == 'E') flag = 'W';
-            else if (flag == 'S') flag = 'N';
-            else flag = 'E';
-            Console.WriteLine(x + " " + y);
-            entry[0] = flag; entry[1] = x; entry[2] = y-1;
+            if (flag == 'N') { flag = 'S'; y++; }
+            else if (flag == 'E') { flag = 'W'; x--; }
+            else if (flag == 'S') { flag = 'N'; y--; }
+            else { flag = 'E'; x++; }
+            entry[0] = flag; entry[1] = x; entry[2] = y;
             return entry;
         }
-
+        public void descrip_maze(int case_num)
+        {
+            int flag = 0;
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"small-test.out.txt", true))
+            {
+                file.Write("Case #" + case_num + ":" + "\r\n");
+                for (int j = 0; j < Math.Sqrt(location.Length); j++)
+                {
+                    flag = 0;
+                    for (int i = 0; i < Math.Sqrt(location.Length); i++)
+                    {
+                        if (location[i, j].up_wall == true && location[i, j].down_wall == false && location[i, j].left_wall == false && location[i, j].right_wall == false)
+                        {
+                            file.Write('e');
+                        }
+                        else if (location[i, j].up_wall == false && location[i, j].down_wall == true && location[i, j].left_wall == false && location[i, j].right_wall == false)
+                        {
+                            file.Write('d'); 
+                        }
+                        else if (location[i, j].up_wall == true && location[i, j].down_wall == true && location[i, j].left_wall == false && location[i, j].right_wall == false)
+                        {
+                            file.Write('c');
+                        }
+                        else if (location[i, j].up_wall == false && location[i, j].down_wall == false && location[i, j].left_wall == true && location[i, j].right_wall == false)
+                        {
+                            file.Write('b');
+                        }
+                        else if (location[i, j].up_wall == true && location[i, j].down_wall == false && location[i, j].left_wall == true && location[i, j].right_wall == false)
+                        {
+                            file.Write('a');
+                        }
+                        else if (location[i, j].up_wall == false && location[i, j].down_wall == true && location[i, j].left_wall == true && location[i, j].right_wall == false)
+                        {
+                            file.Write('9');
+                        }
+                        else if (location[i, j].up_wall == true && location[i, j].down_wall == true && location[i, j].left_wall == true && location[i, j].right_wall == false)
+                        {
+                            file.Write('8');
+                        }
+                        else if (location[i, j].up_wall == false && location[i, j].down_wall == false && location[i, j].left_wall == false && location[i, j].right_wall == true)
+                        {
+                            file.Write('7');
+                        }
+                        else if (location[i, j].up_wall == true && location[i, j].down_wall == false && location[i, j].left_wall == false && location[i, j].right_wall == true)
+                        {
+                            file.Write('6');
+                        }
+                        else if (location[i, j].up_wall == false && location[i, j].down_wall == true && location[i, j].left_wall == false && location[i, j].right_wall == true)
+                        {
+                            file.Write('5');
+                        }
+                        else if (location[i, j].up_wall == true && location[i, j].down_wall == true && location[i, j].left_wall == false && location[i, j].right_wall == true)
+                        {
+                            file.Write('4');
+                        }
+                        else if (location[i, j].up_wall == false && location[i, j].down_wall == false && location[i, j].left_wall == true && location[i, j].right_wall == true)
+                        {
+                            file.Write('3');
+                        }
+                        else if (location[i, j].up_wall == true && location[i, j].down_wall == false && location[i, j].left_wall == true && location[i, j].right_wall == true)
+                        {
+                            file.Write('2');
+                        }
+                        else if (location[i, j].up_wall == false && location[i, j].down_wall == true && location[i, j].left_wall == true && location[i, j].right_wall == true)
+                        {
+                            file.Write('1');
+                        }
+                        else if (location[i, j].up_wall == false && location[i, j].down_wall == false && location[i, j].left_wall == false && location[i, j].right_wall == false)
+                        {
+                            flag++;
+                            //Console.Write('f');
+                        }
+                    }
+                    if (flag == Math.Sqrt(location.Length)) break;
+                    else file.WriteLine();
+                }
+                
+            }
+        }
     }
 }
