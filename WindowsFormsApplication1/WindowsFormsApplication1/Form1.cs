@@ -23,13 +23,26 @@ namespace WindowsFormsApplication1
         {
             //Отрезать в лабиринтах первый ход вперед
             Read();
-            string str = txt[8][0].Remove(0,1);
-            string str2 = txt[8][1].Remove(0,1);
-            Console.WriteLine(str);
-            build_maze(str, str2); //Передаем два прохода в метод создания лабиринта
-            descrip_maze(8);
+            string str = "", str2 = "";
+            for (int i = 1; i <= Convert.ToInt32(small[0][0]); i++)
+            {
+                str = small[i][0].Remove(0, 1);
+                str2 = small[i][1].Remove(0, 1);
+                build_maze(str, str2); //Передаем два прохода в метод создания лабиринта
+                descrip_maze(i, "small");
+            }
+            for (int i = 1; i <= Convert.ToInt32(large[0][0]); i++)
+            {
+                str = large[i][0].Remove(0, 1);
+                str2 = large[i][1].Remove(0, 1);
+                build_maze(str, str2); //Передаем два прохода в метод создания лабиринта
+                descrip_maze(i, "large");
+            }
+            //Console.WriteLine(str);
+            
         }
-        string[][] txt;
+        string[][] small;
+        string[][] large;
         Labyrinth[,] location;
         public void Read()
         {
@@ -37,10 +50,18 @@ namespace WindowsFormsApplication1
             {
                 StreamReader sr = new StreamReader("small-test.in.txt");
                 string[] line = sr.ReadToEnd().Split(new Char[] {'\n'});
-                txt = new string[line.Length][];
+                small = new string[line.Length][];
                 for (int i = 0; i < line.Length; i++)
                 {
-                    txt[i] = line[i].Split(new Char[] {' '});
+                    small[i] = line[i].Split(new Char[] { ' ' });
+                }
+                sr.Close();
+                sr = new StreamReader("large-test.in.txt");
+                line = sr.ReadToEnd().Split(new Char[] { '\n' });
+                large = new string[line.Length][];
+                for (int i = 0; i < line.Length; i++)
+                {
+                    large[i] = line[i].Split(new Char[] { ' ' });
                 }
                 sr.Close();
                 //foreach (string[] x in txt)
@@ -223,10 +244,10 @@ namespace WindowsFormsApplication1
             entry[0] = flag; entry[1] = x; entry[2] = y;
             return entry;
         }
-        public void descrip_maze(int case_num)
+        public void descrip_maze(int case_num, string name)
         {
             int flag = 0;
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"small-test.out.txt", true))
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(name + @"-test.out.txt", true))
             {
                 file.Write("Case #" + case_num + ":" + "\r\n");
                 for (int j = 0; j < Math.Sqrt(location.Length); j++)
