@@ -21,7 +21,6 @@ namespace WindowsFormsApplication1
 
         public void Main()
         {
-            //Отрезать в лабиринтах первый ход вперед
             Read();
             string str = "", str2 = "";
             for (int i = 1; i <= Convert.ToInt32(small[0][0]); i++)
@@ -64,18 +63,11 @@ namespace WindowsFormsApplication1
                     large[i] = line[i].Split(new Char[] { ' ' });
                 }
                 sr.Close();
-                //foreach (string[] x in txt)
-                //{
-                //    foreach (string y in x)
-                //        Console.WriteLine(y);
-                //}
             }
             catch (Exception e)
             {
                 Console.WriteLine("Exception: " + e.Message);
-            }
-              
-              
+            }  
         }
  
 
@@ -112,7 +104,7 @@ namespace WindowsFormsApplication1
         {
             int size;
             if(str.Length > str2.Length)
-            size = 1 + 2 * str.Count(z => z.Equals('W')); // Размер лабиринта (надо уточнить какой проход использовать)
+            size = 1 + 2 * str.Count(z => z.Equals('W')); // Размер лабиринта
             else size = 1 + 2 * str2.Count(z => z.Equals('W'));
             location = new Labyrinth[size, size];
             for (int i = 0; i < Math.Sqrt(location.Length); i++)
@@ -125,15 +117,6 @@ namespace WindowsFormsApplication1
             object[] maze = { 'S', size / 2, 0 }; // Начальные значения 
             maze = go_maze(str, maze); //Прямой проход
             go_maze(str2, maze); //Обратный проход
-            //for (int i = 0; i < Math.Sqrt(location.Length); i++)
-            //{
-            //    for (int j = 0; j < Math.Sqrt(location.Length); j++)
-            //    {
-            //        //Console.Write(String.Format("{0,3}", i,j));
-            //        Console.Write(String.Format("{0,5}", "\n x " + i + " y " + j + "\n dw = " + location[i, j].down_wall + "\n lw = " + location[i, j].left_wall + "\n rw = " + location[i, j].right_wall + "\n uw = " + location[i, j].up_wall));
-            //    }
-            //    Console.WriteLine();
-            //}
         }
 
         public object[] go_maze(string str, object[] entry)
@@ -314,7 +297,6 @@ namespace WindowsFormsApplication1
                         else if (location[i, j].up_wall == false && location[i, j].down_wall == false && location[i, j].left_wall == false && location[i, j].right_wall == false)
                         {
                             flag++;
-                            //Console.Write('f');
                         }
                     }
                     if (flag == Math.Sqrt(location.Length)) break;
